@@ -11,12 +11,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
-
     const request = context.switchToHttp().getRequest();
     const userId = request.params.id;
     const userEmail = request.params.email;
 
-    if (userId && user.id !== userId) {
+
+    if (context.getClass().name !== 'ClientsController' && userId && user.id !== userId) {
       throw new ForbiddenException();
     }
 

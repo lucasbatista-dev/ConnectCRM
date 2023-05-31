@@ -11,19 +11,26 @@ export class ClientsPrismaRepository implements ClientsRepository {
 
   constructor(private prisma: PrismaService) { }
 
-  async create(data: CreateClientDto): Promise<Client> {
+  async create(data: CreateClientDto, userId: string): Promise<Client> {
     const client = new Client()
     Object.assign(client, {
       ...data
     })
-    /* const newClient = await this.prisma.client.create({
-      data: { ...client }
-    }) */
+    await this.prisma.client.create({
+      data: {
+        ...client,
+        userId: userId
+      }
+    })
     return plainToInstance(Client, client)
 
   }
-  async findAll(): Promise<Client[]> {
-    const clients = await this.prisma.client.findMany()
+  async findAll(userId: string): Promise<Client[]> {
+    const clients = await this.prisma.client.findMany({
+      where: {
+        userId: userId
+      }
+    })
     return plainToInstance(Client, clients)
 
   }

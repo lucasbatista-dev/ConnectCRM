@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { ClientsRepository } from './repositories/clients.repository';
@@ -8,35 +8,47 @@ export class ClientsService {
 
   constructor(private clientsRepository: ClientsRepository) { }
 
-  create(createClientDto: CreateClientDto) {
-    return this.clientsRepository.create(createClientDto);
+  async create(createClientDto: CreateClientDto, userId: string) {
+    return await this.clientsRepository.create(createClientDto, userId);
   }
 
-  findAll() {
-    return this.clientsRepository.findAll();
+  async findAll(paramsId: string, tokenId: string) {
+    if (paramsId !== tokenId) {
+      throw new ForbiddenException();
+    }
+    return await this.clientsRepository.findAll(paramsId);
   }
 
-  findOne(id: string) {
-    const findClient = this.clientsRepository.findOne(id)
+  async findOne(id: string, userId: string) {
+    const findClient = await this.clientsRepository.findOne(id)
     if (!findClient) {
       throw new NotFoundException('Client not found')
+    }
+    if (findClient.userId !== userId) {
+      throw new ForbiddenException();
     }
     return this.clientsRepository.findOne(id);
 
   }
 
-  update(id: string, updateClientDto: UpdateClientDto) {
-    const findClient = this.clientsRepository.findOne(id)
+  async update(id: string, updateClientDto: UpdateClientDto, userId: string) {
+    const findClient = await this.clientsRepository.findOne(id)
     if (!findClient) {
       throw new NotFoundException('Client not found')
+    }
+    if (findClient.userId !== userId) {
+      throw new ForbiddenException();
     }
     return this.clientsRepository.update(id, updateClientDto);
   }
 
-  remove(id: string) {
-    const findClient = this.clientsRepository.findOne(id)
+  async remove(id: string, userId: string) {
+    const findClient = await this.clientsRepository.findOne(id)
     if (!findClient) {
       throw new NotFoundException('Client not found')
+    }
+    if (findClient.userId !== userId) {
+      throw new ForbiddenException();
     }
     return this.clientsRepository.delete(id);
   }

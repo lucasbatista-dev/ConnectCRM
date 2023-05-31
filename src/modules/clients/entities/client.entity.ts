@@ -2,13 +2,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class Client {
   readonly id: string
-  fullname: string
+  fullName: string
   email: string
   phoneNumber: string
   createdAt: Date
   updatedAt: Date
   deletedAt?: Date
-  user_id?: string
+  userId?: string
 
   constructor() {
     this.id = uuidv4();

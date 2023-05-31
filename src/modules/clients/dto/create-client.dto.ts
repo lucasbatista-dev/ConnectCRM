@@ -1,13 +1,10 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateClientDto {
-  @IsString()
-  @IsNotEmpty()
-  name: string
 
   @IsString()
   @IsNotEmpty()
-  fullname: string;
+  fullName: string;
 
   @IsEmail()
   @IsNotEmpty()
@@ -22,8 +19,4 @@ export class CreateClientDto {
   updatedAt: Date;
 
   deletedAt?: Date;
-
-  @IsString()
-  @IsNotEmpty()
-  user_id?: string;
 }
