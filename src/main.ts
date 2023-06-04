@@ -11,8 +11,8 @@ async function bootstrap() {
     origin: 'http://localhost:3001',
   });
   const config = new DocumentBuilder()
-    .setTitle('Musics app')
-    .setDescription(' listen your musics ')
+    .setTitle('Connect CRM')
+    .setDescription(' Manager your contacts ')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

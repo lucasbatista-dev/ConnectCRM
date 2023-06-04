@@ -4,6 +4,7 @@ import {
   UseGuards,
   Request,
   UnauthorizedException,
+  HttpCode,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -18,36 +19,45 @@ export class ClientsController {
   @UseInterceptors(ClassSerializerInterceptor)
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   create(@Body() createClientDto: CreateClientDto, @Request() req) {
     return this.clientsService.create(createClientDto, req.user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+
   @Get('user/:id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   findAll(@Request() req, @Param('id') id: string) {
     return this.clientsService.findAll(id, req.user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @Get(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string, @Request() req) {
     return this.clientsService.findOne(id, req.user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Get('/email/:email')
   @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  findByEmail(@Param('email') email: string) {
+    return this.clientsService.findByEmail(email);
+  }
+
   @Patch(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto, @Request() req) {
     return this.clientsService.update(id, updateClientDto, req.user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @HttpCode(204)
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string, @Request() req) {
     return this.clientsService.remove(id, req.user.id);
   }

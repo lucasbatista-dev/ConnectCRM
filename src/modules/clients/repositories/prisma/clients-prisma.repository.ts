@@ -40,6 +40,13 @@ export class ClientsPrismaRepository implements ClientsRepository {
     })
     return plainToInstance(Client, client)
   }
+
+  async findByEmail(email: string): Promise<Client> {
+    const client = await this.prisma.client.findFirst({
+      where: { email },
+    })
+    return client
+  }
   async update(id: string, data: UpdateClientDto): Promise<Client> {
     const client = await this.prisma.client.update({
       where: { id },

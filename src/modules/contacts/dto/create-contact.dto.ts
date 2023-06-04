@@ -1,14 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
-export class CreateClientDto {
+export class CreateContactDto {
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
   fullName: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    default: "email@email.com"
+  })
   @IsEmail()
   @IsNotEmpty()
   email: string
@@ -23,4 +25,5 @@ export class CreateClientDto {
   updatedAt: Date;
 
   deletedAt?: Date;
+
 }

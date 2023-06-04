@@ -12,18 +12,43 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       throw err || new UnauthorizedException();
     }
     const request = context.switchToHttp().getRequest();
-    const userId = request.params.id;
-    const userEmail = request.params.email;
+    const paramId = request.params.id;
+    const paramEmail = request.params.email;
 
-
-    if (context.getClass().name !== 'ClientsController' && userId && user.id !== userId) {
+    if (context.getClass().name !== 'ClientsController' && paramId && user.id !== paramId) {
       throw new ForbiddenException();
     }
-
-    if (userEmail && user.email !== userEmail) {
+    if (paramEmail && user.email !== paramEmail) {
       throw new ForbiddenException();
     }
 
     return user;
+  }
+}
+
+@Injectable()
+export class JwtAuthGuardContacts extends AuthGuard('jwt') {
+  canActivate(context: ExecutionContext) {
+    return super.canActivate(context);
+  }
+
+  handleRequest(err, user, info, context: ExecutionContext) {
+    if (err || !user) {
+      throw err || new UnauthorizedException();
+    }
+    const request = context.switchToHttp().getRequest();
+    const paramId = request.params.id;
+    const paramEmail = request.params.email;
+
+
+    if (context.getClass().name !== 'ContactsController' && paramId && user.id !== paramId) {
+      throw new ForbiddenException();
+    }
+    if (paramEmail && user.email !== paramEmail) {
+      throw new ForbiddenException();
+    }
+
+    return user;
+
   }
 }

@@ -8,12 +8,14 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
   @UseInterceptors(ClassSerializerInterceptor)
+
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -21,6 +23,7 @@ export class UsersController {
   }
 
   @Get()
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   findAll() {
     return this.usersService.findAll();
@@ -33,9 +36,9 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @Get('email/:email')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('email/:email')
   findByEmail(@Param('email') email: string) {
     return this.usersService.findByEmail(email);
   }
@@ -49,6 +52,8 @@ export class UsersController {
 
   @HttpCode(204)
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
