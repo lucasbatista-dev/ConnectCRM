@@ -13,6 +13,9 @@ Agora abra o terminal dentro da raiz do projeto e rode o seguinte comando:
 ```bash
 $ yarn install
 ```
+## Comando para gerar o banco de dados e persistir localmente
+```bash
+$ npx prisma migrate dev```
 
 ## Iniciando o servidor
 
