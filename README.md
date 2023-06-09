@@ -15,7 +15,8 @@ $ yarn install
 ```
 ## Comando para gerar o banco de dados e persistir localmente
 ```bash
-$ npx prisma migrate dev```
+$ npx prisma migrate dev
+```
 
 ## Iniciando o servidor
 
